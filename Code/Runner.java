@@ -24,9 +24,10 @@ public class Runner {
     
 	public static void main(String[] args) throws IOException {
 
-		
+		//Invokes the Methods class
 		Methods M = new Methods();
-
+		
+		//Creates the Swing window for logging
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame = new JFrame("Log");
 	    frame.setBounds(0, 0, 600, 400);
@@ -39,32 +40,24 @@ public class Runner {
 	    textArea.append("Starting program...\r\n");
 	    
 
+	    //Gets directory for input files
 		File f = new File(System.getProperty("user.dir")+"\\input\\");
-		/*
-		Process process = Runtime.getRuntime().exec("ping www.stackabuse.com");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-	    String line = "";
-	    while ((line = reader.readLine()) != null) {
-	        System.out.println(line);
-	    }
-	    */
 	    textArea.append("Scanned Input Directory, now converting...\r\n");
 	    
+	    //For loop to go through all files in the input folder
 		for (File F : f.listFiles()) {
 			Scanner sc = new Scanner(F);
+			//The Make method creates an ArrayList of "Entry" objects that contain all the info that we want
 			ArrayList<Entry> AE = M.Make(sc);
+			//FileWriter writes everything we need
 			FileWriter fw = new FileWriter(System.getProperty("user.dir") + "\\output\\" + F.getName().substring(0,F.getName().length()-4)+".txt");
 			fw.write("Data File\tColumn\r\n");
+			//Internal For Loop for each output file
 			for (Entry e : AE) {
 				fw.write(e.getID() + ".d\t" + e.getCol().substring(1,2)+"\r\n");
 			}
 			fw.flush();
 		    textArea.append(F.getName() + " processed\r\n");
-			/*
-			for (Entry e : AE) {
-				System.out.println(e.getID());
-			}
-			*/
 		}
 
 	    textArea.append("\r\n");
